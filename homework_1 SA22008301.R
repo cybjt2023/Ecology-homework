@@ -1,4 +1,5 @@
 # Ecology Homework 1, Author: caoying, Student ID: SA22008301
+rm(list = ls())
 #1.
 #Loading libraries of tidyverse and ade4, 
 #as well as the doubs data into R.
@@ -31,16 +32,19 @@ class(env_tb)     #checking the class of new env data
 #Extract and remain the data of the dfs with more than 1000 km.
 dfs<-env_tb$dfs
 env_tb[dfs>1000,]   #3.1
-env_final<-env_tb[env_tb$dfs>1000,] %>%   #3.
 #3.2
 #Selecting columns for further analysis.
 #columns:site, dfs, slo, flo, pH, nit, oxy.
-select(site, dfs, slo, flo, pH, nit, oxy)%>% 
+env_tb %>% select(site, dfs, slo, flo, pH, nit, oxy)
+env_tb2<- env_tb %>% select(site, dfs, slo, flo, pH, nit, oxy)
 #3.3
 #Renaming Some column names as follows:
 #dfs to distsour, slo to slope,flo to flowrate, nit to nitrogen, oxy to oxygen.
-rename(distsour = dfs, slope =slo , flowrate =flo ,  nitrogen =nit , oxygen =oxy )%>%  
+env_tb2 %>% rename(distsour = dfs, slope =slo , flowrate =flo ,  nitrogen =nit , oxygen =oxy ) 
+env_tb3<- env_tb2 %>% rename(distsour = dfs, slope =slo , flowrate =flo ,  nitrogen =nit , oxygen =oxy ) 
 #3.4
 #Arranging the data first by slope in ascending order, 
 #and then by pH in descending order.
-arrange(slope,desc(pH))  
+env_tb3[order(env_tb3$slope, -env_tb3$pH),]
+env_tb4<-env_tb3[order(env_tb3$slope, -env_tb3$pH),]
+env_final<-env_tb4      #name the final variable as env_final.
