@@ -1,8 +1,7 @@
 # Ecology Homework 1, Author: caoying, Student ID: SA22008301
 rm(list = ls())
 #1.
-#Loading libraries of tidyverse and ade4, 
-#as well as the doubs data into R.
+#Loading libraries of tidyverse and ade4,as well as the doubs data into R.
 install.packages("ade4")   #install package ade4
 install.packages("tidyverse")   #install package tidyverse
 library(ade4)              #load library of the package ade4
@@ -26,8 +25,6 @@ env_dataframe<-data.frame(site,env)
 env_tb<-as_tibble(env_dataframe)    
 class(env_tb)     #checking the class of new env data
 #3.
-#Concatenating several steps with %>% pipe,
-#and name the final variable as env_final.
 #3.1 
 #Extract and remain the data of the dfs with more than 1000 km.
 dfs<-env_tb$dfs
