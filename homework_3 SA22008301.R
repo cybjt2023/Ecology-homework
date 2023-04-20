@@ -27,6 +27,7 @@ fish <- doubs$fish
 fish <- doubs$fish %>% 
   mutate(fish,tfs=rowSums(doubs$fish))
 total_fish<-subset(fish,tfs!=0)
+
 #Which site has the most species (and how many species)? 
 seq(along=total_fish[,28])[total_fish[,28]==max(total_fish[,28])]
 seq(along=total_fish[,28])[total_fish[,28]==min(total_fish[,28])]
@@ -44,9 +45,8 @@ mwide_species
 #seq(along=mw_species[,2])[mw_species[,2]==min(mw_species[,2])]
 #min_species<-min(mw_species$null_0)
 
-#2. Select a suitable association measure of species
-#选择R模式聚类鱼类群落
-#物种多度矩阵的转置矩阵
+#2. Select a suitable association measure of species.
+#2.1 选择R模式聚类鱼类群落
 spe.t<-t(spe)  #用t函数转置矩阵（物种丰度）
 spe.t.chi<-decostand(spe.t,"chi.square")   #卡方转化
 spe.t.dhel<-dist(spe.t.chi)
@@ -55,7 +55,7 @@ spe.t.chi.single<-hclust(spe.t.dhel,method = "single")
 plot(spe.t.chi.single)
 spe.t.chi.ward <- hclust(spe.t.dhel, method="ward.D2")
 plot(spe.t.chi.ward)
-#选择Q模式聚合地点
+#2.2 选择Q模式聚合地点
 spe.norm<-decostand(spe,"normalize")
 spe.ch<-vegdist(spe.norm,"euc")  #弦距离矩阵
 spe.dc<- vegdist(spe.norm)   #计算Chord距离聚类
@@ -66,7 +66,7 @@ spe.ch.ward <- hclust(spe.ch, method="ward.D2")
 spe.ch.single<-hclust(spe.ch,method = "single")
 plot(spe.ch.ward)
 plot(spe.ch.single)
-#选择Q模式聚类env
+#2.3 选择Q模式聚类env
 env.norm <- decostand(env, "normalize")
 env.ch <- vegdist(env.norm)  #弦距离矩阵
 env.ch.ward <- hclust(env.ch, method="ward.D2")   #计算ward & single最小方差聚类
@@ -74,7 +74,8 @@ env.ch.single<-hclust(env.ch,method = "single")
 plot(env.ch.ward)
 plot(env.ch.single)
 #鱼类群落与地点均可对应
-#3. Do RDA analysis
+
+#3. Do RDA analysis.
 #选择正确的分析方法
 decorana(spe)
 #Axis Lengths值在3.0~4.0之间,选择RDA
@@ -90,7 +91,7 @@ RDA2=round(RDA$CCA$eig[2]/sum(RDA$CCA$eig)*100,2)
 plot(RDA)
 #物种数据 Hellinger 预转化
 spe_hel <- decostand(spe, method = 'hellinger')
-spe_rda <- rda(spe_hel~., env, scale = FALSE)
-plot(spe_rda)  #使用全部的环境数据
-summary(spe_rda)  #绘图
+spe_rda <- rda(spe_hel~., env, scale = FALSE)   #使用全部的环境数据
+plot(spe_rda)    #绘图
+summary(spe_rda)  
 #除pH外的其他因素均对鱼类分布有显著影响
